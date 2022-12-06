@@ -1,5 +1,8 @@
+import path from 'path';
 import express from "express";
 import pino from "pino";
+import {fileURLToPath} from 'url';
+
 
 const logger = pino();
 
@@ -33,7 +36,15 @@ const items = [
   "voluptatem",
 ];
 
-app.get("/", (req, res) => {
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
+
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, '/index.html'));
+});
+
+app.get("/hello", (req, res) => {
   logger.info(`user requested homepage ${requestCount}`);
   res.send(`hello world ${requestCount}`);
   requestCount++;
