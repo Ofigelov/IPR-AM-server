@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev:fe": "vite",
+    "dev:be": "nodemon server.mjs",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
@@ -19,6 +20,10 @@
     "typescript": "^4.6.4",
     "vite": "^3.2.3",
     "node-sass": "^8.0.0",
-    "sass": "^1.56.1"
+    "sass": "^1.56.1",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20",
+    "pino": "^8.7.0",
+    "prettier": "^2.8.0"
   }
 }
