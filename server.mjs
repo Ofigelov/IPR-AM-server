@@ -1,15 +1,20 @@
 import path from 'path';
 import express from "express";
 import pino from "pino";
+import ExpressPino from 'express-pino-logger';
 import {fileURLToPath} from 'url';
 
+const PORT = 3005;
 
 const logger = pino();
 
-const app = express();
-const PORT = 3005;
+const expressPino = new ExpressPino({
+  logger: logger
+})
 
+const app = express();
 app.use(express.static("external"));
+app.use(expressPino);
 
 let requestCount = 0;
 
@@ -75,3 +80,4 @@ app.get("/items", (req, res) => {
 app.listen(PORT, () => {
   logger.info(`app is ready on ${PORT}`);
 });
+
