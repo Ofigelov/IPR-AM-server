@@ -1,20 +1,33 @@
 import path from 'path';
 import express from "express";
-import pino from "pino";
-import ExpressPino from 'express-pino-logger';
+import winston from 'winston';
+import expressWinston from 'express-winston';
 import {fileURLToPath} from 'url';
 
 const PORT = 3005;
 
-const logger = pino();
-
-const expressPino = new ExpressPino({
-  logger: logger
-})
+const logger = winston.createLogger({
+  level: 'info',
+  transports: [
+    new winston.transports.Console()
+  ],
+});
 
 const app = express();
 app.use(express.static("external"));
-app.use(expressPino);
+app.use(expressWinston.logger({
+  format: winston.format.combine(
+    winston.format.colorize(),
+    winston.format.json()
+  ),
+  transports: [
+    new winston.transports.Console()
+  ],
+  meta: true,
+  msg: "HTTP {{req.method}} {{req.url}}",
+  expressFormat: true,
+  colorize: false,
+}));
 
 let requestCount = 0;
 
