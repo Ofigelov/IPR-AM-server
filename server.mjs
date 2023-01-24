@@ -59,7 +59,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '/index.html'));
+  throw Error();
+  res.sendFile(path.join(__dirname, '/index.html'))
 });
 
 app.get("/hello", (req, res) => {
@@ -89,8 +90,21 @@ app.get("/items", (req, res) => {
     )
   );
 });
-
+app.use(expressWinston.errorLogger({
+  format: winston.format.combine(
+    winston.format.colorize(),
+    winston.format.json()
+  ),
+  transports: [
+    new winston.transports.Console()
+  ],
+  meta: true,
+  msg: "HTTP {{req.method}} {{req.url}}",
+  expressFormat: true,
+  colorize: false,
+}))
 app.listen(PORT, () => {
   logger.info(`app is ready on ${PORT}`);
 });
+
 
